@@ -24,6 +24,7 @@ library(ggplot2)
 library(caret)
 library(lattice)
 library(dplyr)
+library(cluster)
 ```
 
 
@@ -56,7 +57,10 @@ fviz_nbclust(Wine_scaled, kmeans, method = 'wss') +
 # Looks like 3 - 6 clusters, likely 3
 
 
-# dim(Wine_scaled) is 178 x 13
+# Can also see the optimal number of clusters using the silhouette score
+fviz_nbclust(Wine_scaled, kmeans, method = "silhouette", k.max = 20)
+
+x# dim(Wine_scaled) is 178 x 13
 
 # K means clustering
 kmeans_out <- kmeans(Wine_scaled, centers = 3, nstart = 10000)
@@ -125,6 +129,15 @@ for(i in 1:13)(
 
 ```
 
+```{r}
+
+# k-medoids clustering
+K_med <- pam(Wine_scaled, 3)
+K_med$medoids
+
+fviz_cluster(K_med, data = Wine_scaled, palette = 'jco', 
+             ggtheme = theme_minimal(), labelsize = 2)
+```
 
 
 
