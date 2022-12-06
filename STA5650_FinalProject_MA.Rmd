@@ -1,0 +1,6 @@
+---
+title: "STA5650FinalProject_MA"
+author: "Monica Amezquita"
+date: "2022-12-06"
+output: pdf_document
+---
