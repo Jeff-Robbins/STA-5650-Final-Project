@@ -60,7 +60,7 @@ fviz_nbclust(Wine_scaled, kmeans, method = 'wss') +
 # Can also see the optimal number of clusters using the silhouette score
 fviz_nbclust(Wine_scaled, kmeans, method = "silhouette", k.max = 20)
 
-x# dim(Wine_scaled) is 178 x 13
+# dim(Wine_scaled) is 178 x 13
 
 # K means clustering
 kmeans_out <- kmeans(Wine_scaled, centers = 3, nstart = 10000)
@@ -282,4 +282,128 @@ ggplot(data=eigen.data, aes(x=X, y=Y, label=Sample)) +
 
 ```
 
+
+
+
+
+```{r}
+
+# Agglomeritave Heirarchical clustering
+
+install.packages('cluster')
+library(cluster)
+
+
+
+# Use the hclust function to get heirarchical clustering
+#   dist() is the chosen metric
+#   method is used to define a similarity measure foe the heirarchical #     clustering
+
+heir_cluster <- hclust(dist(Wine_scaled), method = "complete")
+
+# Plot results in a dendogram
+plot(heir_cluster)
+
+
+# Now determine where to cut the tree based on how many clusters we want, 3
+
+ClusterCut <- cutree(heir_cluster, 3)
+
+
+#########################################################
+# Use Single as a similarity metric
+
+heir_clust_single <- hclust(dist(Wine_scaled), method = "single")
+
+plot(heir_clust_single)
+
+# Divide into 3 clusters
+
+ClusterCut_single <- cutree(heir_clust_single, 3)
+table(ClusterCut_single)
+
+########################################################
+
+# Now, use the average similarity metric
+
+h.clust_avg <- hclust(dist(Wine_scaled), method = "average")
+
+plot(h.clust_avg)
+
+ClusterCut_avg <- cutree(h.clust_avg, 3)
+
+table(ClusterCut_avg)
+
+#######################################################
+
+# Now, use the centroid metric
+
+h.clust_cent <- hclust(dist(Wine_scaled), method = "centroid")
+
+plot(h.clust_cent)
+
+ClusterCut_cent <- cutree(h.clust_cent, 3)
+
+table(ClusterCut_cent)
+
+```
+
+
+```{r}
+
+# Divisive heirarchical clustering
+
+# Measure dissimilarity by the Diana metric
+
+h.clust_diana <- diana(Wine_scaled, metric = "euclidean")
+
+pltree(h.clust_diana, cex = 0.6, main = "Dendrogram of divisive clustering")
+
+ClusterCut_diana <- cutree(h.clust_diana, 3)
+
+table(ClusterCut_diana)
+
+
+fviz_cluster(list(data = Wine_scaled, cluster = ClusterCut_diana))
+
+```
+
+
+
+```{r}
+
+install.packages("dbscan")
+library(dbscan)
+
+
+# Calculate and store clusters in the cluster variable, and choose values of epsilon and minpts
+
+
+Cluster_db <- dbscan(Wine_scaled, eps = seq(0.01,5,0.01), minPts = 5)
+
+
+fviz_cluster(Cluster_db, Wine_scaled, geom = "point", 
+             palette = "set2", ggtheme = theme_minimal())
+
+```
+
+
+
+
+```{r}
+
+# PCA 
+#   Roughly page 177
+Wine_cov <- cov(Wine_scaled)
+
+Wine_eigen <- eigen(Wine_cov)
+
+
+# Eigen vectors are the principal componeents
+print(Wine_eigen$vectors)
+print(Wine_eigen$values)
+
+plot(Wine_eigen$valueS, type = 'o')
+
+```
 
