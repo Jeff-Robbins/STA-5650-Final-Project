@@ -373,7 +373,7 @@ fviz_cluster(list(data = Wine_scaled, cluster = ClusterCut_diana))
 ```{r}
 
 install.packages("dbscan")
-library(dbscan)
+library(dbscan) 
 
 
 # Calculate and store clusters in the cluster variable, and choose values of epsilon and minpts
