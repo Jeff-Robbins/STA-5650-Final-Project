@@ -36,6 +36,10 @@ wine_std <- scale(wine)
 head(wine_std)
 ```
 
+# Select Optimal Number of Clusters
+```{r}
+
+```
 
 # Hierarchical Clustering
 
@@ -66,5 +70,5 @@ wine_clusters <- cutree(cluster_wine, k = 3)
 
 ## Visualize Cluster Data
 ```{r}
-fviz_cluster(list(data=wine_std), cluster = wine_clusters)
+fviz_cluster(object = list(data=wine_std, cluster = wine_clusters))
 ```
