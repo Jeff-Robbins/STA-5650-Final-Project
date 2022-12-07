@@ -4,3 +4,67 @@ author: "Monica Amezquita"
 date: "2022-12-06"
 output: pdf_document
 ---
+# Hierarchical Clustering 
+
+
+## Importing required libraries 
+```{r}
+library(tidyverse)  # data manipulation
+library(cluster)    # clustering algorithms
+library(ggplot2)
+library(factoextra) # clustering visualization
+library(dendextend) # for comparing two dendrograms
+```
+
+
+## Reading in Dataset
+```{r}
+#Read in dataset 
+wine <- read.csv("wine-clustering.csv")
+
+print(head(wine))
+
+#Check for missing values
+print(any(is.na(wine)))
+```
+
+
+## Standardizing the Dataset
+```{r}
+#Standardize dataset 
+wine_std <- scale(wine)
+head(wine_std)
+```
+
+
+# Hierarchical Clustering
+
+This portion of the project uses MIT OpenCourseWare on Youtube as reference. The information can be found at the following link: https://www.youtube.com/watch?v=GPOUGpF-Sno
+
+We first seek to obtain the euclidean distance between all points. We use the dist() function in R. Because the dataset does not include any descriptive data such as ID number, we will use all features in our clustering algorithm. 
+
+```{r}
+distances <- dist(wine_std, method = "euclidean")
+```
+
+We now apply the hierarchical clustering method using the ward method. The ward method uses the distances between clusters using the centroid distance as well as the variance in each cluster. 
+
+```{r}
+cluster_wine <- hclust(distances, method = "complete")
+```
+
+We now plot the dendogram of the clustering model. The dendogram lists all of the datapoints on the bottom, so this is why we see a dense black output at the bottom of the dendogram. Looking at the cluster dendogram, we can visually group three clusters in the dendogram.
+```{r}
+plot(cluster_wine)
+rect.hclust(cluster_wine, k = 3, border = 2:5)
+```
+
+
+```{r}
+wine_clusters <- cutree(cluster_wine, k = 3)
+```
+
+## Visualize Cluster Data
+```{r}
+fviz_cluster(list(data=wine_std), cluster = wine_clusters)
+```
