@@ -37,8 +37,9 @@ head(wine_std)
 ```
 
 # Select Optimal Number of Clusters
-```{r}
 
+```{r}
+fviz_nbclust(wine_std, FUN = hcut, method = "wss")
 ```
 
 # Hierarchical Clustering
