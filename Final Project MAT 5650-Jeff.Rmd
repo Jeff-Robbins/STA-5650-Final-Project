@@ -39,6 +39,9 @@ Wine_scaled <- scale(Wine_Df)
 summary(Wine_scaled)
 # plot(Wine_scaled)
 
+typeof(Wine_scaled)
+
+
 ```
 
 
@@ -75,11 +78,11 @@ Wine_Clustered <- data.frame(Wine_scaled, km_cluster)
 
 fviz_cluster(list(data = Wine_Clustered, cluster = km_cluster))
 
-hist(Wine_Clustered$km_cluster,Wine_Clustered$Alcohol)
+# hist(Wine_Clustered$km_cluster,Wine_Clustered$Alcohol)
 
 Wine_Clustered$km_cluster <- as.factor(Wine_Clustered$km_cluster)
 
-hist(Wine_Clustered$km_cluster,Alcohol)
+# hist(Wine_Clustered$km_cluster,Alcohol)
 
 Wine_Clustered$km_cluster <- as.numeric(Wine_Clustered$km_cluster)
 typeof(Wine_Clustered$km_cluster)
@@ -103,8 +106,7 @@ ColNames[2]
 # Plotting all pairs of scatterplots and coloring by cluster, output of 79 plots
 for (i in 1:13)(
   for(j in (i+1):13)(
-        print(ggplot(Wine_Clustered, aes(Wine_Clustered[,i], y = Wine_Clustered[,j], 
-                               color = km_cluster)) + 
+        print(ggplot(Wine_Clustered, aes(Wine_Clustered[,i], y = Wine_Clustered[,j], color = km_cluster)) + 
             geom_point() +
             guides(color = guide_legend(title = 'Cluster')) +
           labs(x = ColNames[i],
@@ -153,6 +155,8 @@ fviz_cluster(K_med, data = Wine_scaled, palette = 'jco',
 
  
 pca <- prcomp(Wine_scaled, scale=FALSE) 
+
+pca
  
 ## plot pc1 and pc2
 plot(pca$x[,1], pca$x[,2])
@@ -283,6 +287,46 @@ ggplot(data=eigen.data, aes(x=X, y=Y, label=Sample)) +
 ```
 
 
+```{r}
+
+## 3d Plot of first 3 PC's
+
+
+############## RUN ALL CODE UP TO LINE 179 BEFORE THIS CHUNK ##################
+#################### CAN SKIP LINES 107 - 130 #################################
+
+library(rgl)
+library(magick) 
+library(webshot2)
+
+# Let's use the iris dataset
+# iris
+
+# This is ugly
+colors <- c("royalblue1", "darkcyan", "oldlace")
+Wine_Clustered$km_cluster <- colors[ as.numeric( as.factor(Wine_Clustered$km_cluster) ) ]
+
+# Static chart
+plot3d( pca$x[,1], pca$x[,2], pca$x[,3], col = Wine_Clustered$km_cluster, 
+        type = "s", radius = .2 )
+
+# We can indicate the axis and the rotation velocity
+play3d( spin3d( axis = c(0, 0, 1), rpm = 20), duration = 10 )
+
+# Save like gif
+# movie3d(
+#   movie="3dAnimatedScatterplot", 
+#   spin3d( axis = c(0, 0, 1), rpm = 30),
+#   duration = 3, 
+#   type = "gif", 
+#   clean = TRUE
+# )
+
+
+```
+
+
+
 
 
 
@@ -330,6 +374,8 @@ h.clust_avg <- hclust(dist(Wine_scaled), method = "average")
 
 plot(h.clust_avg)
 
+table(h.clust_avg)
+
 ClusterCut_avg <- cutree(h.clust_avg, 3)
 
 table(ClusterCut_avg)
@@ -364,6 +410,10 @@ ClusterCut_diana <- cutree(h.clust_diana, 3)
 table(ClusterCut_diana)
 
 
+
+
+
+
 fviz_cluster(list(data = Wine_scaled, cluster = ClusterCut_diana))
 
 ```
@@ -373,7 +423,7 @@ fviz_cluster(list(data = Wine_scaled, cluster = ClusterCut_diana))
 ```{r}
 
 install.packages("dbscan")
-library(dbscan) 
+library(dbscan)
 
 
 # Calculate and store clusters in the cluster variable, and choose values of epsilon and minpts
@@ -404,6 +454,8 @@ print(Wine_eigen$vectors)
 print(Wine_eigen$values)
 
 plot(Wine_eigen$valueS, type = 'o')
+
+
 
 ```
 
