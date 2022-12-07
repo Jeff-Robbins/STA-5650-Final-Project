@@ -292,7 +292,7 @@ ggplot(data=eigen.data, aes(x=X, y=Y, label=Sample)) +
 ## 3d Plot of first 3 PC's
 
 
-############## RUN ALL CODE UP TO LINE 179 BEFORE THIS CHUNK ##################
+############## RUN ALL CODE UP TO LINE 179  BEFORE THIS CHUNK ##################
 #################### CAN SKIP LINES 107 - 130 #################################
 
 library(rgl)
