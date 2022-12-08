@@ -134,14 +134,33 @@ table(groups)
 Appending cluster labels to original dataset
 ```{r}
 #append cluster labels to original data
-final_data <- cbind(wine_std, cluster = groups)
+final_data <- data.frame(wine_std, cluster = groups)
 
 #display first six rows of final data
-head(final_data)
+#head(final_data)
 ```
 
 Finding the mean of variables in each cluster:
 ```{r}
 #find mean values for each cluster
 fviz_cluster(object = list(data=wine_std, cluster = groups))
+```
+```{r}
+table(groups)
+```
+3D plots using Agglomerative
+```{r}
+colors <- c("royalblue1", "darkcyan", "oldlace")
+final_data$clustercolor <- colors[ as.numeric( as.factor(Wine_Clustered$km_cluster) ) ]
+
+# Static chart
+plot3d( pca$x[,1], pca$x[,2], pca$x[,3], col = final_data$clustercolor, 
+        type = "s", radius = .2 )
+```
+
+```{r}
+clusplot(wine_std, groups, shade = TRUE, color = TRUE, span = TRUE,
+         main = paste('Clusters of Wines'), 
+         xlab = 'PC1',
+         ylab = 'PC2')
 ```
