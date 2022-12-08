@@ -44,6 +44,35 @@ typeof(Wine_scaled)
 
 ```
 
+```{r}
+# library(ggpubr)
+# library(ggscatter)
+# # Random code for generating concise figures and plots
+# 
+# Wine_scaled <- as.data.frame(Wine_scaled)
+# attach(Wine_scaled)
+# 
+# High_cor_df <- data.frame(Flavanoids, OD280,Proline, Alcohol, Total_Phenols,
+#                           Proanthocyanins)
+# ggplot(data = Wine_Clustered) +
+#   geom_point(mapping = aes(x = Flavanoids, 
+#                              y = Total_Phenols))
+# 
+# ggplot(data=Wine_Clustered, aes(x=Flavanoids, y=Total_Phenols)) +
+#         geom_smooth(method="lm") +
+#         geom_point() +
+#         stat_regline_equation(label.x=-1, label.y=2) +
+#         stat_cor(aes(labe
+#                      
+# ggscatter(Wine_Clustered, x = Flavanoids, y = Total_Phenols, 
+#           add = "reg.line") +
+#   stat_cor(label.x = -1, label.y = 2) +
+#   stat_regline_equation(label.x = -1, label.y = 1.6)
+
+```
+
+
+
 
 
 ```{r}
@@ -97,10 +126,11 @@ Wine_Clustered$km_cluster <- as.factor(Wine_Clustered$km_cluster)
 
 
 # Single scatterplot colored by cluster
-ggplot(Wine_Clustered, aes(Alcohol, y = Flavanoids, 
-                           color = Wine_Clustered$km_cluster)) + 
-  geom_point() +
-  guides(color = guide_legend(title = 'Cluster'))
+# ggplot(Wine_Clustered, aes(Alcohol, y = Flavanoids, 
+#                            color = Wine_Clustered$km_cluster)) + 
+#   geom_point() +
+#   guides(color = guide_legend(title = 'Cluster')) +
+  
 
 # Gathering column names / variable names
 ColNames <- colnames(Wine_Clustered)
@@ -140,6 +170,8 @@ for(i in 1:13)(
 K_med <- pam(Wine_scaled, 3)
 K_med$medoids
 
+print(K_med)
+
 fviz_cluster(K_med, data = Wine_scaled, palette = 'jco', 
              ggtheme = theme_minimal(), labelsize = 2)
 ```
@@ -171,6 +203,8 @@ pca.var.per <- round(pca.var/sum(pca.var)*100, 1)
  
 barplot(pca.var.per, main="Scree Plot", xlab="Principal Component", 
         ylab="Percent Variation")
+
+fviz_eig(pca, addlabels = TRUE)
  
 ## now make a fancy looking plot that shows the PCs and the variation:
 
@@ -296,7 +330,7 @@ ggplot(data=eigen.data, aes(x=X, y=Y, label=Sample)) +
 
 
 ############## RUN ALL CODE UP TO LINE 179  BEFORE THIS CHUNK ##################
-#################### CAN SKIP LINES 107 - 130 #################################
+#################### CAN SKIP LINES 140 - 163 #################################
 
 library(rgl)
 library(magick) 
@@ -399,6 +433,8 @@ table(ClusterCut_cent)
 
 
 ```{r}
+install.packages('cluster')
+library(cluster)
 
 # Divisive heirarchical clustering
 
@@ -434,6 +470,8 @@ library(dbscan)
 
 Cluster_db <- dbscan(Wine_scaled, eps = seq(0.01,5,0.01), minPts = 5)
 
+
+table(Cluster_db)
 
 fviz_cluster(Cluster_db, Wine_scaled, geom = "point", 
              palette = "set2", ggtheme = theme_minimal())
