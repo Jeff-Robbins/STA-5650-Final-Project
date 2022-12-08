@@ -36,6 +36,15 @@ wine_std <- scale(wine)
 head(wine_std)
 ```
 
+Wine dataset visualization: 
+```{r}
+x <- wine_std[,1:13] |> as.matrix()
+d <- dist(x)
+
+library(fields)
+image.plot(as.matrix(d), axes = FALSE, col = rev(RColorBrewer::brewer.pal(9,"RdBu")))
+```
+
 # Select Optimal Number of Clusters
 
 ```{r}
@@ -78,7 +87,7 @@ fviz_cluster(object = list(data=wine_std, cluster = wine_clusters))
 ```
 
 ```{r}
-table(wine_clusters, Wine_scaled)
+table(wine_clusters, wine_std)
 ```
 
 Here we use code from the following link: https://www.statology.org/hierarchical-clustering-in-r/ as a second look at agglomerative clustering.
