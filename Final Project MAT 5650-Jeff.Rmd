@@ -76,11 +76,14 @@ km_cluster <- kmeans_out$cluster
 
 Wine_Clustered <- data.frame(Wine_scaled, km_cluster)
 
+Wine_Clustered$km_cluster <- as.numeric(Wine_Clustered$km_cluster)
+
+
 fviz_cluster(list(data = Wine_Clustered, cluster = km_cluster))
 
 # hist(Wine_Clustered$km_cluster,Wine_Clustered$Alcohol)
 
-Wine_Clustered$km_cluster <- as.factor(Wine_Clustered$km_cluster)
+
 
 # hist(Wine_Clustered$km_cluster,Alcohol)
 
